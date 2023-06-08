@@ -11,6 +11,7 @@ import * as moment from 'moment';
 import { async } from 'rxjs';
 import { MyLinea } from '../my_linea';
 import { normalize } from 'normalize-diacritics';
+import { AuthService } from '../auth.service';
 
 
 
@@ -55,14 +56,21 @@ export class MapPage implements OnInit {
   estaciones2:MyEstacion[]=[ ];
   jsonEstaciones: any;
   diferenciaAct: number = 1000;
+  user: string;
 
   constructor(
     private coordCompleteService: CoordCompleteService,
     private aemetService: AemetService,
-
+    public authService: AuthService,
   ) { }
 
   ngOnInit() {
+    if(this.authService.userData !== undefined){
+      this.user = this.authService.userData!.displayName!.toString();
+    }
+    else{
+      this.user=''
+    }
     this.getPosition();
     this.jsonData=this.coordCompleteService.obtenerCoor();
     console.log(this.jsonData)
@@ -296,6 +304,10 @@ export class MapPage implements OnInit {
   }
   quitarAcentos(texto: string): string {
     return texto.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  }
+  async realizarLogin(){
+    this.user = await this.authService.GoogleAuth()
+    this.user= this.user.replace(/["']/g, '');
   }
   
 }

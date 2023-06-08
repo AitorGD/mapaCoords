@@ -8,10 +8,24 @@
     <span>Conjunto de Datos</span>
     <span>Organizaciones</span>
     <span>Acerca de</span>
-    <ion-button color="light" routerLink="/map">Ir al mapa</ion-button>
+    
+
+    
+    <ion-button color="translucent" class="ion-float-end ion-margin-end ion-margin-top" (click)="authService.GoogleAuth()">
+      <input type="image" class="login" alt="Login" src="./../../assets/icon/login.png">
+    </ion-button>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <input type="image" class="menuIMG" alt="Login" src="./../../assets/icon/menu.png">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="5">
+        <ion-button class="mapa" routerLink="/map"><input type="image" class="mapa" alt="mapa" src="./../../assets/icon/mapa.png"></ion-button>
+      </ion-col>
+      <ion-col size="4">
+        <input type="image" class="menuIMG" alt="Login" src="./../../assets/icon/menuS.png">
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

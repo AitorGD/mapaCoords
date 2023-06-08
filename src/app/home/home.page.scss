@@ -48,15 +48,10 @@ input.image{
   padding-top: 1px;
 }
 span{
-  font-size: small;
   font-weight: bold;
   padding-left: 6%;
 }
-ion-button{
-  vertical-align: middle;
-  padding-left: 10%;
-  color:light;
-}
+
 ion-content{
   --background:#E9E9E9;
 }
@@ -64,8 +59,28 @@ ion-item{
   margin-left: 20%;
   margin-right: 20%;
 }
-input.menuIMG{
- 
-  width: 76%;
-  margin-left: 12%;
+
+input.login{
+  width: 40px;
+}
+span{
+  color: black
+}
+input.mapa{
+  width: 75%;
+  vertical-align: middle;
+  padding-top: 0px;
+}
+ion-button.mapa{
+  --background: #FFFFFF;
+  margin-left: 30%;
+  margin-top: 30px;
+  height: 55%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+
+}
+.menuIMG{
+  margin-right: 30%;
+  margin-top: 30px;
+  height: 100%;
 }

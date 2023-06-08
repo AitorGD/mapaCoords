@@ -1,14 +1,17 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar style="display: inline-flex;">
     <ion-title>  
     </ion-title>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-button color="light" class="json" (click)="cargarJSON()"> Cargar Incidentes </ion-button> 
+    <ion-button color="light" class="json ion-margin-top" (click)="cargarJSON()"> Cargar Incidentes </ion-button> 
     <!-- <input type="file" (change)="onFileSelected($event)" style="display: none" #fileInput>
     <ion-button color="light" (click)="fileInput.click()">Seleccionar archivo</ion-button> -->
-
+    <ion-item class="ion-float-end" ><span>{{ user }}</span></ion-item>
+    <ion-button color="translucent" class="ion-float-end ion-margin-end ion-margin-top" *ngIf="user === ''" (click)="realizarLogin()">
+      <input type="image" class="login" alt="Login" src="./../../assets/icon/login.png">
+    </ion-button>    
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -36,8 +39,6 @@
             <map-polyline *ngFor="let linea of lines"
             [path]="linea.position"
             >
-            
-            
             </map-polyline> 
           </google-map>
           <div class="floating-text">
