@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>  
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-button color="light" class="json" (click)="cargarJSON()"> Cargar Incidentes </ion-button> 
+    <!-- <input type="file" (change)="onFileSelected($event)" style="display: none" #fileInput>
+    <ion-button color="light" (click)="fileInput.click()">Seleccionar archivo</ion-button> -->
+
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+
+        <ion-content class="map-container">
+          <google-map
+            height="100%"
+            width="100%"
+            [center]="center">
+            <map-marker
+              *ngFor="let point of points"
+              [position]="point.position"
+              [title]="point.title">
+            </map-marker>
+            <map-marker *ngFor="let estacion of estacionesClima"
+              [position]="estacion.position"
+              [title]="estacion.nombre + '->'+ estacion.clima"
+              [icon]="icon">
+            </map-marker>
+            <map-marker *ngFor="let estacionW of pointsWeather"
+              [position]="estacionW.position"
+              [title]="estacionW.title"
+              [icon]="iconV">
+            </map-marker>
+            <map-polyline *ngFor="let linea of lines"
+            [path]="linea.position"
+            >
+            
+            
+            </map-polyline> 
+          </google-map>
+          <div class="floating-text">
+            <ion-card>
+              <ion-card-content>
+                <p>
+                  <img src="../../assets/icon/iconRoja.png" alt="Incidente"> Incidente
+                </p>
+                <p>
+                  <img src="../../assets/icon/estacion.png" alt="estacion"> Estaciones de Aemet
+                </p>
+                <p>
+                  <img src="../../assets/icon/estacionVerde.png" alt="Incidentes de Tiempo"> Incidentes por Clima
+                </p>
+              </ion-card-content>
+            </ion-card>
+          </div>
+        </ion-content>
+</ion-content>

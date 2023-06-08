@@ -1,0 +1,22 @@
+.map-container {
+  position: relative;
+}
+
+.floating-text {
+  position: absolute;
+  top: 20px; /* Ajusta la posición vertical según tus necesidades */
+  right: 20px; /* Ajusta la posición horizontal según tus necesidades */
+  z-index: 1; /* Asegura que el texto se superponga al mapa */
+}
+img{
+  width: 40px;
+  height: 40px;
+}
+p{
+    display: flex;
+    align-items: center;
+    color: rgb(255, 255, 255); /* Cambia el color según tus necesidades */
+    font-family: Arial, sans-serif; /* Cambia la fuente según tus necesidades */
+}
+  
+  

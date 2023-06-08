@@ -1,0 +1,7 @@
+{
+  "name": "mapaCoords",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
