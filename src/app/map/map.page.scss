@@ -5,7 +5,7 @@
 .floating-text {
   position: absolute;
   top: 20px; /* Ajusta la posición vertical según tus necesidades */
-  right: 20px; /* Ajusta la posición horizontal según tus necesidades */
+  right: 50px; /* Ajusta la posición horizontal según tus necesidades */
   z-index: 1; /* Asegura que el texto se superponga al mapa */
 }
 img{
@@ -27,5 +27,21 @@ span{
 .json{
   margin-top: 10px;
 }
+pre{
+  display: flex;
+  color: rgb(255, 255, 255); /* Cambia el color según tus necesidades */
+  font-family: Arial, sans-serif; /* Cambia la fuente según tus necesidades */
+}
+.cardText{
 
-  
+  display: flex;
+  justify-content: space-around;
+}
+.floating-textbox {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin-right: 50px;
+  margin-bottom: 10px;
+
+}

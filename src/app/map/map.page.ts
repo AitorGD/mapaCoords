@@ -16,6 +16,7 @@ import { AuthService } from '../auth.service';
 
 
 
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.page.html',
@@ -37,7 +38,9 @@ export class MapPage implements OnInit {
     // anchor: new google.maps.Point(0, 0) // anchor
 };
 
-
+  textoInfo: string = "Presione el boton\nCARGAR ACCIDENTES\npara mostrar los incidentes "
+  selectedPoint: any;
+  mapZoom = 10;
   tam: google.maps.Size = new google.maps.Size(40, 40);
   center: google.maps.LatLngLiteral;
   jsonData: any;
@@ -85,13 +88,14 @@ export class MapPage implements OnInit {
 
   }
   async cargarJSON(): Promise<any>{
+    this.textoInfo="Cargando los accidentes..."
     this.jsonData= await this.coordCompleteService.obtenerCoor();
     console.log(this.points)
     console.log(this.jsonData)
     this.jsonEstaciones=this.aemetService.getEst();
     console.log(this.jsonEstaciones)
     this.cargarMapa();
-
+    this.textoInfo="Accidentes Cargados\nSelecione un marcador para mas información"
 
   }
   async getPosition() {
@@ -106,7 +110,7 @@ export class MapPage implements OnInit {
     console.log("Cargando Coordenadas en el mapa...")
     this.points=[];
     for(let coord in this.jsonData){
-      if(this.jsonData[coord].Weather=="true"){
+      if(this.jsonData[coord].Type=="EnvironmentalObstruction"){
         //console.log("Hola gente");
         this.obtenerEstaciones(Number(this.jsonData[coord].Latitud),Number(this.jsonData[coord].Longitud), String(this.jsonData[coord].Time ));
         this.newpointW = { 
@@ -116,8 +120,7 @@ export class MapPage implements OnInit {
           },
           title: this.jsonData[coord].Time,
           time: this.jsonData[coord].Time,
-          image: 'https://lh5.googleusercontent.com/p/AF1QipOCgzq_0DYB9AxD-ItTG01x2csLsSfWsawBCypc=w408-h306-k-no',
-          text: 'Animi voluptatem, aliquid impedit ratione placeat necessitatibus quisquam molestiae obcaecati laudantium?',
+          type: this.jsonData[coord].Type,
         }
         this.pointsWeather.push(this.newpointW)
 
@@ -129,8 +132,7 @@ export class MapPage implements OnInit {
           },
           title: this.jsonData[coord].Time,
           time: this.jsonData[coord].Time,
-          image: 'https://lh5.googleusercontent.com/p/AF1QipOCgzq_0DYB9AxD-ItTG01x2csLsSfWsawBCypc=w408-h306-k-no',
-          text: 'Animi voluptatem, aliquid impedit ratione placeat necessitatibus quisquam molestiae obcaecati laudantium?',
+          type: this.jsonData[coord].Type,
         }
         this.points.push(this.newpoint)
       }
@@ -285,7 +287,7 @@ export class MapPage implements OnInit {
           indicativo: estacionAct.indicativo,
           fechaIni: estacionAct.fechaIni,
           fechaFin: estacionAct.fechaFin,
-          clima: "Error: No hay datos del clima en esta estacion",
+          clima: "No hay datos del clima disponibles en esta estacion",
         };
       }
       
@@ -309,5 +311,34 @@ export class MapPage implements OnInit {
     this.user = await this.authService.GoogleAuth()
     this.user= this.user.replace(/["']/g, '');
   }
-  
+  marcadorEstacion(estacion:any) {
+    this.textoInfo=estacion;
+  }
+  marcadorClicado(){
+    console.log("Me has cliclado")
+  }
+  // showInfoWindow(point: any) {
+  //   console.log("Me has cliclado")
+  //   this.selectedPoint = point;
+  // }
+
+  closeInfoWindow() {
+    console.log("Me has cliclado")
+    this.selectedPoint = null;
+  }
+  showInfoEstacion(point:any) {
+    console.log(point)
+    this.textoInfo= point.provincia+" - "+point.nombre+"\n"
+                  +point.clima+"\n"+point.fechaIni.replace(/%3A/g, ':')+"\n"
+                  +point.fechaFin.replace(/%3A/g, ':') + "\n"
+                  +"Lat: "+point.position.lat.toFixed(2) + " " +"Lon: "+ point.position.lng.toFixed(2)+"\n"
+                  +"Indicativo:  " + point.indicativo;
+  }
+  showInfoWindow(point:any) {
+    console.log(point)
+    this.textoInfo= point.title+"\n"
+                  +"Lat: "+point.position.lat.toFixed(2) + " " +"Lon: "+ point.position.lng.toFixed(2)+"\n"
+                  +"Tipo: " + point.type ;
+    
+  }
 }
