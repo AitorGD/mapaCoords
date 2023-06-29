@@ -7,4 +7,5 @@ export interface MyPoint {
   title: string;
   type: string;
   time: string;
+  ocurrency: string;
 }

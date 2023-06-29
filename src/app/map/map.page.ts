@@ -38,6 +38,11 @@ export class MapPage implements OnInit {
     // anchor: new google.maps.Point(0, 0) // anchor
 };
 
+
+// [icon]="getMarkerIcon(point.icon.url)" --> Añadir esto al HTML
+  incMap =true;
+  estMap =true;
+  incMetMap =true;
   textoInfo: string = "Presione el boton\nCARGAR ACCIDENTES\npara mostrar los incidentes "
   selectedPoint: any;
   mapZoom = 10;
@@ -76,7 +81,9 @@ export class MapPage implements OnInit {
     }
     this.getPosition();
     this.jsonData=this.coordCompleteService.obtenerCoor();
-    console.log(this.jsonData)
+
+    //console.log(this.jsonData)
+
     this.aemetService.getEstaciones().subscribe(
       (response) => {
         this.jsonEstaciones=this.aemetService.getEstacionesURL(response.datos)
@@ -87,13 +94,19 @@ export class MapPage implements OnInit {
     );
 
   }
+  getMarkerIcon(url : any) {
+    return {
+      url: url,
+      scaledSize: new google.maps.Size(50, 50),
+    };
+  }
   async cargarJSON(): Promise<any>{
     this.textoInfo="Cargando los accidentes..."
     this.jsonData= await this.coordCompleteService.obtenerCoor();
-    console.log(this.points)
-    console.log(this.jsonData)
+    //console.log(this.points)
+    //console.log(this.jsonData)
     this.jsonEstaciones=this.aemetService.getEst();
-    console.log(this.jsonEstaciones)
+    //console.log(this.jsonEstaciones)
     this.cargarMapa();
     this.textoInfo="Accidentes Cargados\nSelecione un marcador para mas información"
 
@@ -110,7 +123,9 @@ export class MapPage implements OnInit {
     console.log("Cargando Coordenadas en el mapa...")
     this.points=[];
     for(let coord in this.jsonData){
-      if(this.jsonData[coord].Type=="EnvironmentalObstruction"){
+      
+      if(this.jsonData[coord].Type=="WeatherRelatedRoadConditions"){
+        console.log("Se ha detectado una incidencia de clima")
         //console.log("Hola gente");
         this.obtenerEstaciones(Number(this.jsonData[coord].Latitud),Number(this.jsonData[coord].Longitud), String(this.jsonData[coord].Time ));
         this.newpointW = { 
@@ -121,6 +136,7 @@ export class MapPage implements OnInit {
           title: this.jsonData[coord].Time,
           time: this.jsonData[coord].Time,
           type: this.jsonData[coord].Type,
+          ocurrency: this.jsonData[coord].Ocurrencia,
         }
         this.pointsWeather.push(this.newpointW)
 
@@ -133,16 +149,17 @@ export class MapPage implements OnInit {
           title: this.jsonData[coord].Time,
           time: this.jsonData[coord].Time,
           type: this.jsonData[coord].Type,
+          ocurrency: this.jsonData[coord].Ocurrencia,
         }
         this.points.push(this.newpoint)
       }
 
     }
-    console.log("Mostrando Estaciones ...")
-    console.log(this.estaciones);
-    console.log("Mostrando Estaciones 2 ...")
-    console.log(this.estaciones2);
-    console.log("Comprobando, mirando y asegurando estacuones")
+    // console.log("Mostrando Estaciones ...")
+    // console.log(this.estaciones);
+    // console.log("Mostrando Estaciones 2 ...")
+    console.log(this.points);
+    // console.log("Comprobando, mirando y asegurando estacuones")
     
     // setTimeout(() => {
     //   let estacionesAux = this.aemetService.getClima();;
@@ -256,7 +273,7 @@ export class MapPage implements OnInit {
 
     } else {
       console.log("Fecha no válida");
-      return "errot";
+      return time;
     }
 
   }
@@ -338,7 +355,27 @@ export class MapPage implements OnInit {
     console.log(point)
     this.textoInfo= point.title+"\n"
                   +"Lat: "+point.position.lat.toFixed(2) + " " +"Lon: "+ point.position.lng.toFixed(2)+"\n"
-                  +"Tipo: " + point.type ;
+                  +"Tipo: " + point.type+"\n" + "   - " + point.ocurrency;
+    
+  }
+  alterarIncidente(){
+    if(this.incMap){
+      this.incMap = false
+    }
+    else{
+      this.incMap = true
+    }
+  }
+  alterarIncidenteMetereo(){
+    if(this.incMetMap){
+      this.incMetMap = false
+    }
+    else{
+      this.incMetMap = true
+    }
+  }
+  alterarEstacion(){
+    this.estMap=!this.estMap;
     
   }
 }
